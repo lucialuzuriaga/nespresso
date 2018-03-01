@@ -19,7 +19,6 @@ public class NespressoTest {
     public void setUp() {
         driver = new ChromeDriver();
         driver.get("https://www.nespresso.com/us");
-
     }
 
     @After
@@ -31,17 +30,19 @@ public class NespressoTest {
     public void testSuccessfulLogin() {
         NespressoPage nespressoPage = new NespressoPage(driver);
         nespressoPage.login("aaa@email.com" ,"Password123");
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("customer-name")));
-        Assert.assertTrue(nespressoPage.isUserLoggedIn("FirstNameAAA", "LastNameAAA", "Welcome"));
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-ng-show='user.logged']")));
+        Assert.assertTrue(nespressoPage.isUserLoggedIn());
     }
 
     @Test
     public void testLogout() {
         NespressoPage nespressoPage = new NespressoPage(driver);
         nespressoPage.login("aaa@email.com" ,"Password123");
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-ng-show='user.logged']")));
         nespressoPage.logout();
-        Assert.assertTrue(nespressoPage.getCustomerNameText().contains("Sign in to your account"));
+        Assert.assertTrue(nespressoPage.getCustomerNameText().equals("Sign in to your account"));
     }
 
     @Test

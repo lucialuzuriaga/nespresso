@@ -1,11 +1,14 @@
 package main;
 
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Assert;
+
+
 
 public class NespressoPage {
 
@@ -23,11 +26,14 @@ public class NespressoPage {
     @FindBy(id="ta-header-login-submit")
     public WebElement loginButton;
 
-    @FindBy(id="ta-header-logout")
+    @FindBy(css="a[href='/us/en/logout']")
     public WebElement logoutButton;
 
     @FindBy(id="email-error-message")
     public WebElement emailErrorMessage;
+
+    @FindBy(id="ta-homepage-navigation-dropdown-menu")
+    public WebElement dropdownMenuIcon;
 
     public NespressoPage(ChromeDriver driver) {
         this.driver = driver;
@@ -42,16 +48,8 @@ public class NespressoPage {
     }
 
     public void logout(){
-        customerNameLabel.click();
+        dropdownMenuIcon.click();
         logoutButton.click();
-    }
-
-    public String getFirstName(){
-        return (driver.findElementByXPath("//*[@id='customer-name']/span[1]").getText());
-    }
-
-    public String getLastName(){
-        return (driver.findElementByXPath("//*[@id='customer-name']/span[1]/span[2]").getText());
     }
 
     public String getCustomerNameText(){
@@ -62,10 +60,10 @@ public class NespressoPage {
         return emailErrorMessage.getText();
     }
 
-    public boolean isUserLoggedIn(String firstName, String lastName, String welcome){
-        Assert.assertTrue(getFirstName().contains(firstName));
-        Assert.assertTrue(getLastName().contains(lastName));
-        Assert.assertTrue(getCustomerNameText().contains(welcome));
+    public boolean isUserLoggedIn(){
+        Assert.assertTrue(driver.findElementByXPath("//*[@data-ng-bind='userName.firstName']").isDisplayed());
+        Assert.assertTrue(driver.findElementByXPath("//*[@data-ng-bind='userName.lastName']").isDisplayed());
+        Assert.assertTrue(getCustomerNameText().contains("Welcome"));
         return true;
     }
 
