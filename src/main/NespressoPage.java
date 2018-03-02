@@ -2,12 +2,16 @@ package main;
 
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.junit.Assert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.concurrent.TimeUnit;
 
 
 public class NespressoPage {
@@ -49,6 +53,8 @@ public class NespressoPage {
 
     public void logout(){
         dropdownMenuIcon.click();
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOf(logoutButton));
         logoutButton.click();
     }
 
